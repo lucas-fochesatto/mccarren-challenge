@@ -5,11 +5,19 @@ import LoadingIcon from "./components/LoadingIcon";
 
 export default function App() {
   const [url, setUrl] = useState("");
+  const [model, setModel] = useState("gpt-4.1-mini"); // Default model
   const [profile, setProfile] = useState(null);
   const [editedProfile, setEditedProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
+
+  const models = [
+    { value: "gpt-4.1-mini", label: "GPT-4.1 Mini" },
+    { value: "gpt-4.1", label: "GPT-4.1" },
+    { value: "gpt-4o-mini", label: "GPT-4O Mini" },
+    { value: "o3-mini", label: "O3 Mini" },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +29,7 @@ export default function App() {
     setError("");
     setProfile(null); // Clear the previous profile
     try {
-      const data = await companyProfile(url);
+      const data = await companyProfile(url, model); // Send model to companyProfile
       setProfile(data);
       setEditedProfile(data); // Initialize the editable profile
     } catch (err) {
@@ -66,6 +74,17 @@ export default function App() {
               placeholder="E.g., https://www.accenture.com"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
             />
+            <select
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="w-full sm:w-auto border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+            >
+              {models.map((m) => (
+                <option key={m.value} value={m.value}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
             <button
               type="submit"
               disabled={isLoading}

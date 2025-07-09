@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-09T17:37:27.945Z",
-  "updatedAt": "2025-07-09T18:07:12.992Z",
+  "updatedAt": "2025-07-09T20:50:24.543Z",
   "id": "Bcg2XETdeJfBbELq",
   "name": "main",
   "active": true,
@@ -85,7 +85,7 @@
         "text": "=Website content:\n{{ $json.data }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "You will be provided with the text content from a company's website. Your mission is to act as a business analyst and extract the following specific fields from the text.\n\nYour response must be a single, valid JSON object, with no additional text or explanations before or after it.\n\n**Field Definitions:**\n\n  * `company_name`: Extract the official and full name of the company.\n  * `company_description`: Provide a brief but comprehensive summary of what the company does, its mission, or its main offerings.\n  * `tier1_keywords`: Identify the primary and most direct keywords that describe the company's core products or services. These should be terms the company would likely use when searching for public government procurement opportunities.\n      * *Example:* For a company that installs solar panels, good Tier 1 keywords would be \"solar panel installation,\" \"renewable energy,\" or \"photovoltaic systems.\"\n  * `tier2_keywords`: Identify secondary keywords that are related to the company's field but are not its core offering. These are terms the company *might* use to explore broader or related government opportunities.\n      * *Example:* For the same solar panel company, Tier 2 keywords could include \"sustainable infrastructure,\" \"energy efficiency consulting,\" or \"electrical grid upgrades.\"\n  * `service_line`: Define the company's high-level business category or industry. This should classify its main line of service.\n      * *Examples:* \"Software as a Service,\" \"Civil Engineering,\" \"Digital Marketing Agency,\" \"Legal Services.\"\n\n**Output Format:**\n\nYour output must strictly follow the JSON format below:\n\n```json\n{\n  \"company_name\": \"name of the company\",\n  \"company_description\": \"description\",\n  \"tier1_keywords\": \"tier 1 keywords here\",\n  \"tier2_keywords\": \"tier 2 keywords here\",\n  \"service_line\": \"company service line here\"\n}\n```"
+          "systemMessage": "You will be provided with the text content from a company's website. Your mission is to act as a business analyst and extract the following specific fields from the text.\n\nYour response must be a single, valid JSON object, with no additional text or explanations before or after it.\n\n**Field Definitions:**\n\n  * `company_name`: Extract the official and full name of the company.\n  * `company_description`: Provide a brief but comprehensive summary of what the company does, its mission, or its main offerings.\n  * `tier1_keywords`: Identify the primary and most direct keywords that describe the company's core products or services. These should be terms the company would likely use when searching for public government procurement opportunities.\n      * *Example:* For a company that installs solar panels, good Tier 1 keywords would be \"solar panel installation,\" \"renewable energy,\" or \"photovoltaic systems.\"\n  * `tier2_keywords`: Identify secondary keywords that are related to the company's field but are not its core offering. These are terms the company *might* use to explore broader or related government opportunities.\n      * *Example:* For the same solar panel company, Tier 2 keywords could include \"sustainable infrastructure,\" \"energy efficiency consulting,\" or \"electrical grid upgrades.\"\n  * `service_line`: Define the company's high-level business category or industry. This should classify its main line of service. It can also be more than one service line.\n      * *Examples:* \"Software as a Service,\" \"Civil Engineering,\" \"Digital Marketing Agency,\" \"Legal Services.\"\n\n**Output Format:**\n\nYour output must strictly follow the JSON format below:\n\n```json\n{\n  \"company_name\": \"name of the company\",\n  \"company_description\": \"description\",\n  \"tier1_keywords\": \"tier 1 keywords here\",\n  \"tier2_keywords\": \"tier 2 keywords here\",\n  \"service_line\": \"company service line here\"\n}\n```"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -101,9 +101,8 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1",
-          "mode": "list",
-          "cachedResultName": "gpt-4.1"
+          "value": "={{ $('Edit Fields1').first().json.model }}",
+          "mode": "id"
         },
         "options": {}
       },
@@ -308,7 +307,7 @@
       }
     ]
   },
-  "versionId": "35c77b42-828e-4929-9bca-ca0ffcd42149",
+  "versionId": "dfdad8e0-12f2-4d14-8333-5490dc0fac58",
   "triggerCount": 1,
   "tags": []
 }

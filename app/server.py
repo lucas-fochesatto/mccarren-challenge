@@ -4,7 +4,7 @@ from services import companyprofilesvc
 
 app = FastAPI(
     title="Server",
-    description="API for internal services",
+    description="API for public services",
     version="1.0.0"
 )
 
@@ -16,12 +16,16 @@ async def root():
 async def company_profile(request: Request):
     data = await request.json()
     website_url = data.get("url")
+    model = data.get("model")
 
     result = urlparse(website_url)
     if not all([result.scheme, result.netloc]):
         return {"status": "Invalid URL"}
 
-    response = await companyprofilesvc.exctract_website_info(website_url)
+    if model not in ["gpt-4.1-mini", "gpt-4.1", "gpt-4o-mini", "o3-mini"]:
+        return {"status": "Invalid model"}
+
+    response = await companyprofilesvc.exctract_website_info(website_url, model)
 
     return response
 
