@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from urllib.parse import urlparse
+from services import companyprofilesvc
 
 app = FastAPI(
     title="Server",
@@ -10,6 +11,20 @@ app = FastAPI(
 @app.get("/")
 async def root():
     return {"message": "Welcome to Server API"}
+
+@app.post("/company_profile")
+async def company_profile(request: Request):
+    data = await request.json()
+    website_url = data.get("url")
+
+    result = urlparse(website_url)
+    if not all([result.scheme, result.netloc]):
+        return {"status": "Invalid URL"}
+
+    response = await companyprofilesvc.exctract_website_info(website_url)
+
+    return response
+
 
 if __name__ == "__main__":
     import uvicorn
