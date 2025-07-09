@@ -21,7 +21,7 @@ To run this project, you’ll need either:
 
 1. Click the **"Open in Codespaces"** badge above.
 2. Wait for your Codespace to initialize and build the containers.
-3. All necessary ports (8001, 5678, 5173) will be forwarded automatically. Access the app via port **80**.
+3. All necessary ports (8001, 5678, 5173, 80) will be forwarded automatically. Access the app via port **80**.
 
 > 💡 **Tip:** Be sure to add your OpenAI key under
 > **Repository → Settings → Secrets → Actions** as `OPENAI_API_KEY`.
