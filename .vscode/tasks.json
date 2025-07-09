@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Server API",
+            "type": "shell",
+            "command": "python server.py",
+            "icon": {
+                "id": "server-process",
+                "color": "terminal.ansiMagenta"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/app",
+                "env": {
+                    "PYTHONPATH": "/workspace/app"
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Frontend",
+            "type": "shell",
+            "command": "npm run dev -- --host",
+            "icon": {
+                "id": "browser",
+                "color": "terminal.ansiGreen"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/frontend"
+            },
+            "problemMatcher": []
+        },
+    ]
+} 

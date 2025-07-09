@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    platform: linux/amd64
+    volumes:
+      - ..:/workspace:cached
+    command: >
+      /bin/sh -c 'sleep infinity'
+    environment:
+      - PYTHONPATH=/workspace/app
+    networks:
+      - challenge-network
+
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_SECURE_COOKIE=false
+      - N8N_HOST=n8n
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_USER_MANAGEMENT_DISABLED=true
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - NODE_ENV=development
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_USER=n8n
+      - DB_POSTGRESDB_PASSWORD=n8n
+    user: root
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ../n8n/export.sh:/export.sh
+      - ../n8n/import_workflows.sh:/import_workflows.sh
+      - ../n8n/import_credentials.sh:/import_credentials.sh
+      - ../n8n/workflows:/workflows
+      - ../n8n/credentials:/credentials
+    #entrypoint: |
+    #  /bin/sh -c "chmod +x /custom_entrypoint.sh &&
+    #  chmod +x /export.sh
+    #  [ \"$CODESPACES\" = \"true\" ] && sh /import_workflows.sh;
+    #  [ \"$CODESPACES\" = \"true\" ] && n8n import:credentials --input=/credentials/credentials.json;"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - challenge-network
+
+  postgres:
+    image: pgvector/pgvector:pg13
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - challenge-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgweb:
+    image: sosedoff/pgweb
+    # platform: linux/amd64
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - PGWEB_DATABASE_URL=postgres://admin:admin@postgres:5432/admin?sslmode=disable
+    networks:
+      - challenge-network
+
+volumes:
+  n8n_data:
+  postgres-data:
+
+networks:
+  challenge-network:
+    name: challenge-network
+    driver: bridge 
