@@ -8,11 +8,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
-@app.get("/")
+@app.get("/api/")
 async def root():
     return {"message": "Welcome to Server API"}
 
-@app.post("/company_profile")
+@app.post("/api/company-profile")
 async def company_profile(request: Request):
     data = await request.json()
     website_url = data.get("url")

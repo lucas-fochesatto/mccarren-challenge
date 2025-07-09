@@ -84,6 +84,17 @@ services:
     networks:
       - challenge-network
 
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - dev
+    networks:
+      - challenge-network
+
 volumes:
   n8n_data:
   postgres-data:
