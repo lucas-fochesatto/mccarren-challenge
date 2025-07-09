@@ -22,3 +22,5 @@ cat <<EOF > /credentials/credentials.json
 EOF
 
 n8n import:credentials --input=/credentials/credentials.json
+
+rm -f /credentials/credentials.json

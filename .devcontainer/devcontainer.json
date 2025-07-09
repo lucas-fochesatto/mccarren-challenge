@@ -3,11 +3,8 @@
     "dockerComposeFile": "./docker-compose.yml",
     "service": "dev",
     "workspaceFolder": "/workspace",
-    "forwardPorts": [8001, 5678, 5173],
-    
-    // Run the setup script after container creation
-    //"postCreateCommand": "bash .devcontainer/setup.sh",
-  
+    "forwardPorts": [8001, 5678, 5173, 80],
+
     "customizations": {
       "vscode": {
         "extensions": [
